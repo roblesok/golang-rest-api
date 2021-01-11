@@ -9,7 +9,6 @@ import (
 )
 
 type bookHandler struct {
-	// Look per request
 	sync.Mutex
 	books model.Books
 }
