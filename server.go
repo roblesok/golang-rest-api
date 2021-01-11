@@ -1,17 +1,17 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"net/http"
+
+	"github.com/roblesok/golang-rest-api/handler"
 )
 
 func main() {
 	port := ":3000"
+	ph := handler.NewBookHandler()
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprintf(w, "Hello, World")
-	})
+	http.Handle("/api/products", ph)
 
 	log.Fatal(http.ListenAndServe(port, nil))
 }
