@@ -6,6 +6,7 @@ import (
 	"sync"
 
 	"github.com/roblesok/golang-rest-api/model"
+	"github.com/roblesok/golang-rest-api/utils"
 )
 
 type bookHandler struct {
@@ -34,7 +35,16 @@ func (bh *bookHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 func (bh *bookHandler) get(w http.ResponseWriter, r *http.Request) {
 	defer bh.Unlock()
 	bh.Lock()
-	SendJSON(w, http.StatusOK, bh.books)
+	id, err := utils.GetIDFromRequest(r)
+	if err != nil {
+		SendJSON(w, http.StatusOK, bh.books)
+		return
+	}
+	if id >= len(bh.books) || id < 0 {
+		SendErr(w, http.StatusNotFound, "Not Found")
+		return
+	}
+	SendJSON(w, http.StatusOK, bh.books[id])
 }
 
 func SendErr(w http.ResponseWriter, code int, msg string) {

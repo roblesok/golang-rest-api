@@ -12,6 +12,7 @@ func main() {
 	ph := handler.NewBookHandler()
 
 	http.Handle("/api/products", ph)
+	http.Handle("/api/products/", ph)
 
 	log.Fatal(http.ListenAndServe(port, nil))
 }
